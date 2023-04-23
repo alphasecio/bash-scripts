@@ -19,7 +19,15 @@ for repo in ${REPOS}; do
   curl -L "https://github.com/${USERNAME}/${repo}/archive/refs/heads/master.zip" -o "${FOLDER_NAME}/${repo}/${repo}.zip"
   
   # Unzip the contents of the ZIP file into the repository directory
-  unzip -j "${FOLDER_NAME}/${repo}/${repo}.zip" -d "${FOLDER_NAME}/${repo}"
+  unzip "${FOLDER_NAME}/${repo}/${repo}.zip" -d "${FOLDER_NAME}/${repo}"
+
+  # Move the extracted files and directories up one level
+  mv "${FOLDER_NAME}/${repo}/${repo}-main/"* "${FOLDER_NAME}/${repo}"
+  mv "${FOLDER_NAME}/${repo}/${repo}-master/"* "${FOLDER_NAME}/${repo}"
+
+  # Remove the empty "-main" or "-master" folders
+  rm -rf "${FOLDER_NAME}/${repo}/${repo}-main"
+  rm -rf "${FOLDER_NAME}/${repo}/${repo}-master"
   
   # Remove the ZIP file
   rm "${FOLDER_NAME}/${repo}/${repo}.zip"
